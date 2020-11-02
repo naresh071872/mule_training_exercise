@@ -24,9 +24,11 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		<http:listener doc:name="Listener" doc:id="21ac490f-b3ba-4280-ba59-b214e74348a4" config-ref="ElectionCampaignListenerConfig" path="/election/campaign"/>
 		<http:request method="GET" doc:name="Request" doc:id="bec1441f-7afa-461e-a376-d995b3907e4b" path="/recent_tweets" config-ref="Twitter_Request_configuration">
 			<http:query-params ><![CDATA[#[output application/java
+var name= "from:" ++ attributes.queryParams.name as String
 ---
+
 {
-	"query" : attributes.queryParams.name
+	"query" :  name
 }]]]></http:query-params>
 		</http:request>
 	</flow>

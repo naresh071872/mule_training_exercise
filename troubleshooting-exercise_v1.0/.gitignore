@@ -2,15 +2,4 @@
 # Studio-specific #
 # --------------- #
 target/
-.mule/**
-.mule/**/*
-.DS_Store
-velocity.log
-.studio/
-flows/
-target/
-.metadata/
-.mule/
-.tooling/
-.tooling-apps-cache/
-**/*.mflow
+
