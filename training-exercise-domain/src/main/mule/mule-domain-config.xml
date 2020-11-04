@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain:mule-domain
+        xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+        xmlns:http="http://www.mulesoft.org/schema/mule/http"
+        xmlns="http://www.mulesoft.org/schema/mule/core"
+        xmlns:domain="http://www.mulesoft.org/schema/mule/ee/domain"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+               http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+               http://www.mulesoft.org/schema/mule/ee/domain http://www.mulesoft.org/schema/mule/ee/domain/current/mule-domain-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="Training_HTTP_Listener_Configuration" doc:name="HTTP Listener config" doc:id="42f6e7e9-56ea-44b0-9ad5-28b1de1df553" >
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="${https.port}" >
+			<tls:context >
+				<tls:key-store type="jks" path="training_exercise_server-keystore.jks" keyPassword="training_exercise" password="training_exercise" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="21ee26bb-4f01-46ae-adf1-369721b0ec16" file="common.properties" />
+
+
+    <!-- configure here resource to be shared within the domain -->
+
+</domain:mule-domain>
