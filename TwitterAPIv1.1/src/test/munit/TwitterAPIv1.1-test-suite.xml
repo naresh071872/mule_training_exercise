@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="TwitterAPIv1.1-test-suite.xml" />
+	<munit:test name="TwitterAPIv1.1-test-suite-twitterintegrationprojFlowTest" doc:id="d4afd22e-7758-46d2-9c8e-4fe1623a1e4d" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="b47b2d5f-e254-40fe-b73f-1487d16d5d74" name="twitterintegrationprojFlow"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

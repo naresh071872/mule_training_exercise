@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.training.exercise</groupId>
-	<artifactId>TwitterAPIv2</artifactId>
+	<artifactId>sys-twitterv2-api-feed</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
 
-	<name>TwitterAPIv2</name>
+	<name>sys-twitterv2-api-feed</name>
 
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
