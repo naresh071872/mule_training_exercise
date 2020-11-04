@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="b10946be-5a68-4764-a9de-5444a93c37ab" file="mule.${mule.env}.properties" />
+	<http:request-config name="Twitter_Request_configuration" doc:name="HTTP Request configuration" doc:id="2f88d673-cbdb-47e5-8006-49f6c6db08a0" >
+		<http:request-connection protocol="HTTPS" host="${twitter.api.host}" port="${twitter.api.port}">
+			<tls:context >
+				<tls:trust-store path="training_exercise_client_truststore.jks" password="training_exercise" type="jks" insecure="true"/>
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<flow name="receive-feed-flow" doc:id="e39536bd-a616-4004-b866-133402e74505" >
+		<http:request method="GET" doc:name="Request" doc:id="bec1441f-7afa-461e-a376-d995b3907e4b" path="/recent_tweets" config-ref="Twitter_Request_configuration">
+			<http:query-params ><![CDATA[#[output application/java
+var name= "from:" ++ attributes.queryParams.fromUser as String
+---
+
+{
+	"query" :  name
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="d770b053-800a-4bc1-a1a0-e1c05e49c1a8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="416b8ebe-0423-4222-b287-bf121a77c550" message="#[payload]"/>
+	</flow>
+</mule>

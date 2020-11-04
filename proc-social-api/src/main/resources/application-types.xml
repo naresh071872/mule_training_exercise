@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="twitter-feed-example" format="json">
+      <types:shape format="weave" example="examples/twitter-feed-example-1.json"><![CDATA[%dw 2.0
+
+type twitter_feed_example = {|
+  data: Array<{|    id: String,     text: String,     created_at: String,     author_id: String  |}>
+|} {"example": "{\\\"data\\\":[{\\\"id\\\":\\\"1323790702577373184\\\",\\\"text\\\":\\\"RT @TeamJoe: New Hampshire, if you are waiting at the polls \u2014 stay in line! If you\u2019re in line, you are guaranteed your right to vote. RT to\u2026\\\",\\\"created_at\\\":\\\"2020-11-04T00:54:32.000Z\\\",\\\"author_id\\\":\\\"939091\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#d770b053-800a-4bc1-a1a0-e1c05e49c1a8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="twitter-feed-example"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="twitter-feed-example[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
