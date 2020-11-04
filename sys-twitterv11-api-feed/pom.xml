@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.training.exercise</groupId>
-	<artifactId>sys-twitterv2-api-feed</artifactId>
+	<artifactId>sys-twitterv11-api-feed</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
 
-	<name>sys-twitterv2-api-feed</name>
+	<name>sys-twitterv11-api-feed</name>
 
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +31,8 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-				</configuration>
+				<classifier>mule-application</classifier>
+                </configuration>
 			</plugin>
 		<plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
