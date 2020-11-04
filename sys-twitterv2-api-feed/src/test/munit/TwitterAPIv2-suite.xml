@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="TwitterAPIv2-suite.xml" />
+	<munit:test name="twitterintegrationprojFlow-test" doc:id="52c1430f-241e-4b89-b4c8-05d3b174a487" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="518732ed-52ca-4ace-9593-27181aebd213" >
+				<munit:payload value="#[readUrl('classpath://twitterintegrationprojFlowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://twitterintegrationprojFlowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="7767a515-2f65-4f81-829b-9ec96ff6c774" name="twitterintegrationprojFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f8918f32-d093-4f03-97bc-bdc11faeb546" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import twitterintegrationprojFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
