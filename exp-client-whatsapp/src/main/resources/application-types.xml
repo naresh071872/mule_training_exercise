@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="twitter-feed-example" format="json">
+      <types:shape format="weave" example="examples/twitter-feed-example-1.json"><![CDATA[%dw 2.0
+
+type twitter_feed_example = {|
+  data: Array<{|    id: String,     text: String,     created_at: String,     author_id: String  |}>
+|} {"example": "{\\\"data\\\":[{\\\"id\\\":\\\"1323790702577373184\\\",\\\"text\\\":\\\"RT @TeamJoe: New Hampshire, if you are waiting at the polls \u2014 stay in line! If you\u2019re in line, you are guaranteed your right to vote. RT to\u2026\\\",\\\"created_at\\\":\\\"2020-11-04T00:54:32.000Z\\\",\\\"author_id\\\":\\\"939091\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="socialapi-feed-response" format="json">
+      <types:shape format="weave" example="examples/socialapi-feed-response-example.json"><![CDATA[%dw 2.0
+
+type socialapi_feed_response = {|
+  owner: String, 
+  source: String, 
+  feeds: Array<{|    message: String,     creationDate: String  |}>
+|} {"example": "{\\\"owner\\\":\\\"naresh_saladi\\\",\\\"source\\\":\\\"twitter\\\",\\\"feeds\\\":[{\\\"message\\\":\\\"Folks, time is running out to make your voice heard in this election. If you haven\u2019t voted yet, go to https:\\/\\/t.co\\/EcbUdX2aPs to find your polling place and head there as soon as you can.\\\",\\\"creationDate\\\":\\\"2020-11-03T23:00:01.000Z\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#e48af033-afad-4f1d-9399-24d6ef352056">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="socialapi-feed-response"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

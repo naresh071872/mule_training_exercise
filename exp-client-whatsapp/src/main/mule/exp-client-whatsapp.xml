@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="b10946be-5a68-4764-a9de-5444a93c37ab" file="mule.${mule.env}.properties" />
+	<http:request-config name="HTTP_Listener_Configuration" doc:name="HTTP Request configuration" doc:id="2f88d673-cbdb-47e5-8006-49f6c6db08a0" >
+		<http:request-connection host="${social.api.host}" port="${social.api.port}" protocol="HTTPS" connectionIdleTimeout="3600000">
+			<tls:context >
+				<tls:trust-store path="training_exercise_client_truststore.jks" password="training_exercise" type="jks" insecure="true"/>
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<global-property doc:name="Global Property" doc:id="aab6c493-d260-4b99-bc4c-20dc001ed3ce" name="mule.env" value="sandbox" />
+	<file:config name="File_Config" doc:name="File Config" doc:id="7674d920-04c4-4cfe-aa59-f40f148d5332" >
+		<file:connection workingDir="C:\feeds" />
+	</file:config>
+	<flow name="receive-feed-flow" doc:id="e39536bd-a616-4004-b866-133402e74505" >
+		<scheduler doc:name="Scheduler" doc:id="d04b7ce6-dc86-4dfb-b6a6-83b0e8dc44ba" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10" timeUnit="MINUTES"/>
+			</scheduling-strategy>
+		</scheduler>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="fbda58ee-ddb9-4b73-97e3-c17c14c37824" >
+			<route >
+				<http:request method="GET" doc:name="RequestForBiden" doc:id="bec1441f-7afa-461e-a376-d995b3907e4b" path="/api/feed/receive?fromUser=JoeBiden" config-ref="HTTP_Listener_Configuration" outputMimeType="application/json" responseTimeout="3600000">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : "788FD6F890a249ad92c6e5349c3ccF21",
+	"client_id" : "1a009696e08e486abca647d57c6e2cec"
+}]]]></http:headers>
+		</http:request>
+			</route>
+			<route >
+				<http:request method="GET" doc:name="RequestForTrump" doc:id="991b00b2-6061-4e46-aa00-cda9a5b141e7" config-ref="HTTP_Listener_Configuration" path="/api/feed/receive?fromUser=realDonaldTrump" outputMimeType="application/json" responseTimeout="3600000">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : "788FD6F890a249ad92c6e5349c3ccF21",
+	"client_id" : "1a009696e08e486abca647d57c6e2cec"
+}]]]></http:headers>
+				</http:request>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="e48af033-afad-4f1d-9399-24d6ef352056" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="eb8bbcc2-aa92-4580-b8c2-980359259252" config-ref="File_Config" path="'feeds'++#[server.dateTime.format('yyyyMMddHHmmss')] ++'.csv'" mode="CREATE_NEW"/>
+		<logger level="INFO" doc:name="Logger" doc:id="416b8ebe-0423-4222-b287-bf121a77c550" message="'socialResponsePayload'++#[payload]"/>
+	</flow>
+</mule>
