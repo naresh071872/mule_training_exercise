@@ -1,0 +1,8 @@
+{
+  "sampleData": {
+    "2d73c27a-e765-4c39-909b-624500723ad6": {
+      "vars-responsePayload": "sample_data/unknown.dwl",
+      "payload": "sample_data/json.json"
+    }
+  }
+}

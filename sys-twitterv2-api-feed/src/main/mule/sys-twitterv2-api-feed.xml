@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd
-http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ae6ba00a-c473-4d77-81c3-718cb2873fab" >
 		<http:listener-connection host="0.0.0.0" port="${https.port}" protocol="HTTPS">
 			<tls:context >
@@ -21,18 +22,35 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		</http:request-connection>
 	</http:request-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="63f42b98-4b1f-43fc-9910-d9bf57ac869e" file="twitter.${mule.env}.properties" />
+	<global-property doc:name="Global Property" doc:id="3b1f4c8e-ac92-440e-a99c-a9b2e12b4ab8" name="mule.env" value="sandbox" />
 	<flow name="twitterintegrationprojFlow" doc:id="37a1dfb3-28fa-41e4-be5f-a58f92a2e30d" >
-		<http:listener doc:name="Listener" doc:id="c8b5de10-ebf8-47b6-8c0e-22f9e0842dda" config-ref="HTTP_Listener_config" path="/recent_tweets" allowedMethods="GET"/>
-		<http:request method="GET" doc:name="SearchQuery" doc:id="952abfc5-e1ef-48e9-8b97-a651a0517882" config-ref="TwitterAPIv2Configuration" path="/2/tweets/search/recent">
+		<http:listener doc:name="Listener" doc:id="c8b5de10-ebf8-47b6-8c0e-22f9e0842dda" config-ref="HTTP_Listener_config" path="/recent_tweets" allowedMethods="GET" outputMimeType="application/json"/>
+		<http:request method="GET" doc:name="SearchQuery" doc:id="952abfc5-e1ef-48e9-8b97-a651a0517882" config-ref="TwitterAPIv2Configuration" path="/2/tweets/search/recent" responseTimeout="3600000" outputMimeType="application/json">
 			<http:query-params ><![CDATA[#[output application/java
+var fromUser= "from:" ++ attributes.queryParams.fromUser as String
 ---
 {
 	"tweet.fields" : "created_at",
 	"expansions" : "author_id",
-	"query" : attributes.queryParams.query,
+	"query" : fromUser,
 	"user.fields" : "created_at"
 }]]]></http:query-params>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="433264e6-28b6-4434-89b7-512e0596a040" message="#[payload]"/>
+		<ee:transform doc:name="native2Canonical" doc:id="2d73c27a-e765-4c39-909b-624500723ad6">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	owner: "naresh saladi",
+	source: "twitter",
+	feeds: payload.data map ( datum , indexOfDatum ) -> {
+		message: datum.text,
+		creationDate: datum.created_at
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="433264e6-28b6-4434-89b7-512e0596a040" message="'Final Payload:'++#[payload]"/>
 	</flow>
 </mule>

@@ -10,19 +10,16 @@ type twitter_feed_example = {|
 
 ]]></types:shape>
     </types:type>
+    <types:type name="socialapi-feed-response" format="json">
+      <types:shape format="weave" example="examples/socialapi-feed-response-example.json"><![CDATA[%dw 2.0
+
+type socialapi_feed_response = {|
+  owner: String, 
+  source: String, 
+  feeds: Array<{|    message: String,     creationDate: String  |}>
+|} {"example": "{\\\"owner\\\":\\\"naresh_saladi\\\",\\\"source\\\":\\\"twitter\\\",\\\"feeds\\\":[{\\\"message\\\":\\\"Folks, time is running out to make your voice heard in this election. If you haven\u2019t voted yet, go to https:\\/\\/t.co\\/EcbUdX2aPs to find your polling place and head there as soon as you can.\\\",\\\"creationDate\\\":\\\"2020-11-03T23:00:01.000Z\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
-  <types:enrichment select="#d770b053-800a-4bc1-a1a0-e1c05e49c1a8">
-    <types:processor-declaration>
-      <types:input-event>
-        <types:message>
-          <types:payload type="twitter-feed-example"/>
-        </types:message>
-      </types:input-event>
-      <types:output-event>
-        <types:message>
-          <types:payload type="twitter-feed-example[]"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
 </types:mule>

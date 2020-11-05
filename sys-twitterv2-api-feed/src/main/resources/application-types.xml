@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="twitter-feed-example" format="json">
+      <types:shape format="weave" example="examples/twitter-feed-example-3.json"><![CDATA[%dw 2.0
+
+type twitter_feed_example = {|
+  data: Array<{|    text: String,     id: String,     created_at: String,     author_id: String  |}>, 
+  includes: {|
+    users: Array<{|      name: String,       username: String,       created_at: String,       id: String    |}>
+  |}, 
+  meta: {|
+    newest_id: String, 
+    oldest_id: String, 
+    result_count: Number {"typeId": "int"}, 
+    next_token: String
+  |}
+|} {"example": "{\\\"data\\\":[{\\\"text\\\":\\\"I am confident we will emerge victorious, but this will not be my victory or our victory alone. It will be a victory for the American people, for our democracy, for America.\\\",\\\"id\\\":\\\"1324115456190459911\\\",\\\"created_at\\\":\\\"2020-11-04T22:25:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"To make progress, we have to stop treating our opponents as enemies. We are not enemies.\\\",\\\"id\\\":\\\"1324112939310264322\\\",\\\"created_at\\\":\\\"2020-11-04T22:15:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"Once this election is finalized and behind us, it will be time for us to do what we've always done as Americans: To put the harsh rhetoric of the campaign behind us.\\\",\\\"id\\\":\\\"1324110423411490816\\\",\\\"created_at\\\":\\\"2020-11-04T22:05:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"Every vote must be counted. No one is going to take our democracy away from us, not now, not ever.\\\",\\\"id\\\":\\\"1324107906246086656\\\",\\\"created_at\\\":\\\"2020-11-04T21:55:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"The presidency, itself, is not a partisan institution. It's the one office in the nation that represents everyone and it demands a duty of care for all Americans, and that is precisely what I will do.\\\",\\\"id\\\":\\\"1324105390049488896\\\",\\\"created_at\\\":\\\"2020-11-04T21:45:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"Power can't be taken or asserted, it flows from the people, and it's their will that determines who will be the President of the United States.\\\",\\\"id\\\":\\\"1324103124768882689\\\",\\\"created_at\\\":\\\"2020-11-04T21:36:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"Tune in as I address the nation on the state of the race. https:\\/\\/t.co\\/00QtuYAiI7\\\",\\\"id\\\":\\\"1324095643116163072\\\",\\\"created_at\\\":\\\"2020-11-04T21:06:16.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"Count every vote.\\\",\\\"id\\\":\\\"1324066382846320641\\\",\\\"created_at\\\":\\\"2020-11-04T19:10:00.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"RT @TeamJoe: Here are the facts... https:\\/\\/t.co\\/UgZ5bDqLU2\\\",\\\"id\\\":\\\"1324062214412767232\\\",\\\"created_at\\\":\\\"2020-11-04T18:53:26.000Z\\\",\\\"author_id\\\":\\\"939091\\\"},{\\\"text\\\":\\\"To make sure every vote is counted, we\u2019re setting up the largest election protection effort ever assembled. Because Donald Trump doesn\u2019t get to decide the outcome of this election \u2014 the American people do.\\\\n\\\\nChip in to power the new Biden Fight Fund: https:\\/\\/t.co\\/1hCoKB0QfP\\\",\\\"id\\\":\\\"1324057905667149826\\\",\\\"created_at\\\":\\\"2020-11-04T18:36:19.000Z\\\",\\\"author_id\\\":\\\"939091\\\"}],\\\"includes\\\":{\\\"users\\\":[{\\\"name\\\":\\\"Joe Biden\\\",\\\"username\\\":\\\"JoeBiden\\\",\\\"created_at\\\":\\\"2007-03-11T17:51:24.000Z\\\",\\\"id\\\":\\\"939091\\\"}]},\\\"meta\\\":{\\\"newest_id\\\":\\\"1324115456190459911\\\",\\\"oldest_id\\\":\\\"1324057905667149826\\\",\\\"result_count\\\":10,\\\"next_token\\\":\\\"b26v89c19zqg8o3fosbttfrtky4slbx47xp07gzih6qv1\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="socialapi-feed-response-example" format="json">
+      <types:shape format="weave" example="examples/socialapi-feed-response-example-1.json"><![CDATA[%dw 2.0
+
+type socialapi_feed_response_example = {|
+  owner: String, 
+  source: String, 
+  feeds: Array<{|    message: String,     creationDate: String  |}>
+|} {"example": "{\\\"owner\\\":\\\"naresh_saladi\\\",\\\"source\\\":\\\"twitter\\\",\\\"feeds\\\":[{\\\"message\\\":\\\"Folks, time is running out to make your voice heard in this election. If you haven\u2019t voted yet, go to https:\\/\\/t.co\\/EcbUdX2aPs to find your polling place and head there as soon as you can.\\\",\\\"creationDate\\\":\\\"2020-11-03T23:00:01.000Z\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#2d73c27a-e765-4c39-909b-624500723ad6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="twitter-feed-example"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="socialapi-feed-response-example"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

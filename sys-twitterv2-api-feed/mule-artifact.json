@@ -1,3 +1,5 @@
 {
-  "minMuleVersion": "4.3.0-20200824"
+  "minMuleVersion": "4.3.0-20200824",
+  "domain": "training-exercise-domain-1.0.1-mule-domain"
+ 
 }

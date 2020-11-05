@@ -1,0 +1,80 @@
+{
+  "data": [
+    {
+      "id": "1323790702577373184",
+      "text": "RT @TeamJoe: New Hampshire, if you are waiting at the polls — stay in line! If you’re in line, you are guaranteed your right to vote. RT to…",
+      "created_at": "2020-11-04T00:54:32.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323788300176388096",
+      "text": "Stay in line, folks.",
+      "created_at": "2020-11-04T00:45:00.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323770935728607237",
+      "text": "As polls begin to close in certain parts of the country, remember to stay in line. \n\nIf you’re in line at your polling place before it closes, you’re able to vote. https://t.co/qUpn30B8mj",
+      "created_at": "2020-11-03T23:36:00.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323761880234553346",
+      "text": "Folks, time is running out to make your voice heard in this election. If you haven’t voted yet, go to https://t.co/EcbUdX2aPs to find your polling place and head there as soon as you can.",
+      "created_at": "2020-11-03T23:00:01.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323753975221522433",
+      "text": "This is our moment to prove that:\n\nLove is more powerful than hate.\nHope is more powerful than fear.\nLight is more powerful than dark.\n\nVote before polls close: https://t.co/eoxT07d7QB",
+      "created_at": "2020-11-03T22:28:36.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323747783732535300",
+      "text": "Let's win this thing, Pennsylvania! https://t.co/jmCXbuL5V3",
+      "created_at": "2020-11-03T22:04:00.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323739479069392904",
+      "text": "Who we are. What we stand for. Who we are going to be.\n\nIt's all at stake — and you have the power to determine the outcome.\n\nVote before polls close: https://t.co/eoxT07d7QB https://t.co/hmv0MGtr5P",
+      "created_at": "2020-11-03T21:31:00.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323731677202567169",
+      "text": "Today is your absolute last chance to vote in this election. If you haven’t voted early, I need you to vote today and stay in line as long as it takes. Our democracy is at stake. Go to https://t.co/EcbUdXjMe2 to find your polling location. https://t.co/igwKdFba98",
+      "created_at": "2020-11-03T21:00:00.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323728652148891651",
+      "text": "RT @KamalaHarris: ☎️ 1 (833) 336-8683 ☎️ \n\nIf you have any questions or concerns about voting, call our hotline. Our team of volunteers are…",
+      "created_at": "2020-11-03T20:47:59.000Z",
+      "author_id": "939091"
+    },
+    {
+      "id": "1323727125380288513",
+      "text": "RT @BarackObama: This Election Day, everything is on the line. Our jobs. Our health care. Whether or not we get this pandemic under control…",
+      "created_at": "2020-11-03T20:41:55.000Z",
+      "author_id": "939091"
+    }
+  ],
+  "includes": {
+    "users": [
+      {
+        "username": "JoeBiden",
+        "created_at": "2007-03-11T17:51:24.000Z",
+        "name": "Joe Biden",
+        "id": "939091"
+      }
+    ]
+  },
+  "meta": {
+    "newest_id": "1323790702577373184",
+    "oldest_id": "1323727125380288513",
+    "result_count": 10,
+    "next_token": "b26v89c19zqg8o3fosbtep22bw13kqb5dz5rvch03k0ot"
+  }
+}
