@@ -10,7 +10,7 @@
 	<munit:config name="exp-client-whatsapp-test-suite.xml" />
 	<munit:test name="exp-client-whatsapp-test-suite-receive-feed-flowTest" doc:id="3e10ca25-0f6c-44e3-a701-6bf6c9ee4fa0" description="Test">
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to receive-feed-flow" doc:id="cb448db3-724a-4de9-8092-8169c7bc9acf" name="receive-feed-flow"/>
+			<flow-ref doc:name="Flow-ref to receive-feed-flow" doc:id="cb448db3-724a-4de9-8092-8169c7bc9acf" name="exp-client-whatsapp-flow"/>
 		</munit:execution>
 	</munit:test>
 

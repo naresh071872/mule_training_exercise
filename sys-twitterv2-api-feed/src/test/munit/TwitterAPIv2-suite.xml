@@ -16,7 +16,7 @@
 			</munit:set-event>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="7767a515-2f65-4f81-829b-9ec96ff6c774" name="twitterintegrationprojFlow"/>
+			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="7767a515-2f65-4f81-829b-9ec96ff6c774" name="sys-twitterv2-api-feed-flow"/>
 		</munit:execution>
 		<munit:validation >
 			<munit-tools:assert doc:name="Assert payload" doc:id="f8918f32-d093-4f03-97bc-bdc11faeb546" message="The payload does not match">

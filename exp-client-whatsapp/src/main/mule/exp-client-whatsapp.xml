@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:coherencecache="http://www.mulesoft.org/schema/mule/coherencecache" xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd
+http://www.mulesoft.org/schema/mule/coherencecache http://www.mulesoft.org/schema/mule/coherencecache/current/mule-coherencecache.xsd">
 	<configuration-properties doc:name="Configuration properties" doc:id="b10946be-5a68-4764-a9de-5444a93c37ab" file="mule.${mule.env}.properties" />
 	<http:request-config name="HTTP_Listener_Configuration" doc:name="HTTP Request configuration" doc:id="2f88d673-cbdb-47e5-8006-49f6c6db08a0" >
 		<http:request-connection host="${social.api.host}" port="${social.api.port}" protocol="HTTPS" connectionIdleTimeout="3600000">
@@ -19,7 +21,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<file:config name="File_Config" doc:name="File Config" doc:id="7674d920-04c4-4cfe-aa59-f40f148d5332" >
 		<file:connection workingDir="C:\feeds" />
 	</file:config>
-	<flow name="receive-feed-flow" doc:id="e39536bd-a616-4004-b866-133402e74505" >
+	<flow name="exp-client-whatsapp-flow" doc:id="e39536bd-a616-4004-b866-133402e74505" >
 		<scheduler doc:name="Scheduler" doc:id="d04b7ce6-dc86-4dfb-b6a6-83b0e8dc44ba" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="10" timeUnit="MINUTES"/>
@@ -27,7 +29,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		</scheduler>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="fbda58ee-ddb9-4b73-97e3-c17c14c37824" >
 			<route >
-				<http:request method="GET" doc:name="RequestForBiden" doc:id="bec1441f-7afa-461e-a376-d995b3907e4b" path="/api/feed/receive?fromUser=JoeBiden" config-ref="HTTP_Listener_Configuration" outputMimeType="application/json" responseTimeout="3600000">
+				<http:request method="GET" doc:name="RequestForBiden" doc:id="bec1441f-7afa-461e-a376-d995b3907e4b" path="/api/feed/receive?fromUser=JoeBiden" config-ref="HTTP_Listener_Configuration" outputMimeType="application/json" responseTimeout="3600000" target="bidenResponse">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
@@ -37,7 +39,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		</http:request>
 			</route>
 			<route >
-				<http:request method="GET" doc:name="RequestForTrump" doc:id="991b00b2-6061-4e46-aa00-cda9a5b141e7" config-ref="HTTP_Listener_Configuration" path="/api/feed/receive?fromUser=realDonaldTrump" outputMimeType="application/json" responseTimeout="3600000">
+				<http:request method="GET" doc:name="RequestForTrump" doc:id="991b00b2-6061-4e46-aa00-cda9a5b141e7" config-ref="HTTP_Listener_Configuration" path="/api/feed/receive?fromUser=realDonaldTrump" outputMimeType="application/json" responseTimeout="3600000" target="trumpResponse">
 				<http:headers ><![CDATA[#[output application/java
 ---
 {
@@ -52,14 +54,46 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload]]></ee:set-payload>
+
+{
+candidates:{
+joeBiden: vars.bidenResponse,
+realDonaldTrump:vars.trumpResponse
+}
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<file:write doc:name="Write" doc:id="eb8bbcc2-aa92-4580-b8c2-980359259252" config-ref="File_Config" path="#['feeds_'++ (now() as String {format: &quot;yyyy_MM_dd_HH_mm_ss_SSS&quot;}) ++ '.json']" mode="CREATE_NEW"/>
-		<error-handler >
+		 <!-- <foreach doc:name="For Each" doc:id="78010207-8597-4a73-88e6-c2b1b12c7a0c" collection="#[payload]" rootMessageVariableName="feedMessage">
+			<coherencecache:put doc:name="Put" doc:id="b4e2547f-ebd3-4fb9-b6fc-c91bfe695573" cacheName="socialapicache" key="#[key]" value="#[value]"/>
+		</foreach> -->
+		<try doc:name="Try" doc:id="3e4dca18-794d-4140-882e-6f8881e54333" >
+			<file:write doc:name="Write" doc:id="eb8bbcc2-aa92-4580-b8c2-980359259252" config-ref="File_Config" path="#['feeds_'++ (now() as String {format: &quot;yyyy_MM_dd_HH_mm_ss_SSS&quot;}) ++ '.json']" mode="CREATE_NEW" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4a6d8520-6f14-4b0a-b86c-b3bb6eff4d54" >
+					<logger level="INFO" doc:name="Error" doc:id="19fc7f96-c11b-4939-9866-efce7deb454d" message="#['Writing File failed' ++ error.errorMessage]" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		 <error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ed4855e8-33b9-4fab-a9b4-14d0c4813ae7" >
 				<logger level="INFO" doc:name="Logger" doc:id="448db938-24c4-4541-9a02-d49ed1b38fe3" message="#['Scheduler failed' ++ error.errorMessage]"/>
+				<!--<try doc:name="Try" doc:id="7e574750-f820-42b5-ab21-1426d2391442" >
+					<java:invoke-static doc:name="Invoke static" doc:id="9a05e31f-f8e4-460c-98f5-2ffd2b045dad" class="com.training.exercise.utils.SendEmail" method="sendEmail(String,String)">
+					<java:args><![CDATA[#[{
+  subject: "WhatsAppExperience Failed:",
+  messageTxt: "Error Happened in client experience"
+}]]]></java:args>
+				</java:invoke-static>
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a66311b5-be0b-4d9c-9a7f-d6346e054406" when="#[Java::isCausedBy(error.cause, 'javax.naming.NamingException')]">
+							<logger level="INFO" doc:name="Logger" doc:id="97659fda-df93-4401-8e01-783b8d5dadf0" message="#[error.cause]"/>
+						</on-error-continue>
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fb5be813-6825-46df-9081-e0693ca29c5a" when="#[Java::isCausedBy(error.cause, 'javax.mail.MessagingException')]">
+							<logger level="INFO" doc:name="Logger" doc:id="9a90edee-2882-4090-88c3-543c6766b014" message="#[error.cause]"/>
+						</on-error-continue>
+					</error-handler>
+				</try>-->
 			</on-error-propagate>
-		</error-handler>
+		</error-handler> 
 	</flow>
 </mule>

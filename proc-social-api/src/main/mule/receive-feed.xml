@@ -24,5 +24,10 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 }]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="416b8ebe-0423-4222-b287-bf121a77c550" message="'socialResponsePayload'++#[payload]"/>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="b5fa93b7-179c-412d-ae89-cc6c3a9afd41" type="ANY">
+				<logger level="INFO" doc:name="Logger" doc:id="739f0576-8ee0-42d7-99ce-0765f35350fd" message='#["Error failed" ++ er]'/>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>

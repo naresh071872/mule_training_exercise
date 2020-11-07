@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="C:/Users/nares/.m2/repository/org/mule/extensions/mule-extensions-archetype/1.2.0/mule-extensions-archetype-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/nares/.m2/repository/org/mule/extensions/mule-extensions-archetype-maven-plugin/1.2.0/mule-extensions-archetype-maven-plugin-1.2.0.jar"/>
+	<classpathentry kind="output" path="target"/>
+</classpath>

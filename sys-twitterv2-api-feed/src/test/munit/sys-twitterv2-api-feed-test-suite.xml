@@ -10,7 +10,7 @@
 	<munit:config name="sys-twitterv2-api-feed-test-suite.xml" />
 	<munit:test name="sys-twitterv2-api-feed-test-suite-twitterintegrationprojFlowTest" doc:id="b563f133-4296-4bf2-aaac-4627328a5480" description="Test">
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="b818e3ef-6c08-4be2-af7c-1d9df7a779fd" name="twitterintegrationprojFlow"/>
+			<flow-ref doc:name="Flow-ref to twitterintegrationprojFlow" doc:id="b818e3ef-6c08-4be2-af7c-1d9df7a779fd" name="sys-twitterv2-api-feed-flow"/>
 		</munit:execution>
 	</munit:test>
 

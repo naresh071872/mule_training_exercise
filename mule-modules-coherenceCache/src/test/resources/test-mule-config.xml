@@ -1,0 +1,22 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:coherencecache="http://www.mulesoft.org/schema/mule/coherencecache"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/coherencecache http://www.mulesoft.org/schema/mule/coherencecache/current/mule-coherencecache.xsd">
+
+    <coherencecache:config name="config" configId="configId">
+        <coherencecache:connection requiredParameter="aValue" />
+    </coherencecache:config>
+
+    <flow name="putFlow">
+        <coherencecache:put cacheName="social_cache" key="01-02-2020" value="test cache1"/>
+    </flow>
+     <flow name="getFlow">
+            <coherencecache:get cacheName="social_cache" key="01-02-2020"/>
+    </flow>
+
+    <flow name="retrieveInfoFlow">
+        <coherencecache:retrieve-info config-ref="config"/>
+    </flow>
+
+</mule>
